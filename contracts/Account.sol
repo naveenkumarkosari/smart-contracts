@@ -56,23 +56,15 @@ function getAddress()public view onlyOwner returns(address){
     }
 
     function incrementNonce(address _id)internal {
-        uint64 nonce;
-        nonce =accounts[_id].nonce;
-        nonce =nonce+1;
-        accounts[_id].nonce = nonce;
+        accounts[_id].nonce++;
     }
 
-    function incrementBalance(address _id,uint256 _bal)internal {
-        uint256 balance;
-        balance = accounts[_id].balance;
-        balance = balance + _bal;
-        accounts[_id].balance = balance;
+    function incrementBalance(address _id,uint256 _bal)internal  {
+        accounts[_id].balance += _bal;
     }
-    function decrementBalance(address _id,uint256 _bal)internal {
-        uint256 balance;
-        balance = accounts[_id].balance;
-        balance = balance - _bal;
-        accounts[_id].balance = balance;
+    function decrementBalance(address _id,uint256 _bal)internal  {
+         require(accounts[_id].balance >= _bal, "Insufficient balance");
+         accounts[_id].balance -= _bal;
     }
 
 }
