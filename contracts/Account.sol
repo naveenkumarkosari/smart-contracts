@@ -62,4 +62,17 @@ function getAddress()public view onlyOwner returns(address){
         accounts[_id].nonce = nonce;
     }
 
+    function incrementBalance(address _id,uint256 _bal)internal {
+        uint256 balance;
+        balance = accounts[_id].balance;
+        balance = balance + _bal;
+        accounts[_id].balance = balance;
+    }
+    function decrementBalance(address _id,uint256 _bal)internal {
+        uint256 balance;
+        balance = accounts[_id].balance;
+        balance = balance - _bal;
+        accounts[_id].balance = balance;
+    }
+
 }
