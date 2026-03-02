@@ -23,11 +23,18 @@ contract Account{
         _;
     }
 
+    event AccountCreated(
+    address indexed account,
+    uint256 timestamp
+      );
+
     function createAccount()public onlyOwner{
+        require(accounts[msg.sender].nonce == 0,"Account exists");
         accounts[msg.sender].balance =0;
         accounts[msg.sender].nonce =0;
         accounts[msg.sender].codehash = keccak256("");
         accounts[msg.sender].stateroot = bytes32(0);
+        emit AccountCreated(msg.sender,block.timestamp);
     }
 
     function getOwner() public view onlyOwner returns (
