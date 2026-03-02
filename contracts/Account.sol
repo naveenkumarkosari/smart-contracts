@@ -1,7 +1,9 @@
 // SPDX-License-Identifier:MIT
 pragma solidity >=0.8.20;
 
-contract Account{
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+contract Account is Ownable{
     struct account {
         uint256 balance;
         uint64 nonce;
@@ -12,15 +14,8 @@ contract Account{
     }
     //storage
     mapping(address=>account) accounts;
-    address isOwner;
 
-    constructor(){
-        isOwner = msg.sender;
-    }
-
-    modifier onlyOwner(){
-        require(msg.sender == isOwner,"you are not the owner");
-        _;
+    constructor() Ownable(msg.sender){
     }
 
     event AccountCreated(address indexed account,uint256 timestamp);
@@ -79,8 +74,6 @@ contract Account{
          require(to != msg.sender,"you cant send yourself");
          accounts[msg.sender].balance -= value;
          accounts[to].balance += value;
-         emit Transfer(isOwner,to, value, block.timestamp);
+         emit Transfer(msg.sender,to, value, block.timestamp);
     }
-
-
 }
