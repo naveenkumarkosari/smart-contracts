@@ -54,9 +54,9 @@ contract Account{
     );
 }
 
-function getAddress()public view onlyOwner returns(address){
-    return msg.sender;
-}
+    function getAddress()public view onlyOwner returns(address){
+        return msg.sender;
+    }
 
     function getAccountBalance(address _id)internal view returns(uint256){
         return accounts[_id].balance;
@@ -66,10 +66,10 @@ function getAddress()public view onlyOwner returns(address){
         accounts[_id].nonce++;
     }
 
-    function incrementBalance(address _id,uint256 _bal)internal  {
+    function increaseBalance(address _id,uint256 _bal)internal  {
         accounts[_id].balance += _bal;
     }
-    function decrementBalance(address _id,uint256 _bal)internal  {
+    function decreaseBalance(address _id,uint256 _bal)internal  {
          require(accounts[_id].balance >= _bal, "Insufficient balance");
          accounts[_id].balance -= _bal;
     }
