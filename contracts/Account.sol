@@ -23,13 +23,11 @@ contract Account{
         _;
     }
 
-    event AccountCreated(
-    address indexed account,
-    uint256 timestamp
-      );
+    event AccountCreated(address indexed account,uint256 timestamp);
+    event Transfer(address indexed from,address indexed to,uint256 balance,uint256 timestamp);
 
     function createAccount()public onlyOwner{
-        require(accounts[msg.sender].nonce == 0,"Account exists");
+        require(accounts[msg.sender].codehash == bytes32(0),"Account exists");
         accounts[msg.sender].balance =0;
         accounts[msg.sender].nonce =0;
         accounts[msg.sender].codehash = keccak256("");
@@ -66,12 +64,23 @@ contract Account{
         accounts[_id].nonce++;
     }
 
-    function increaseBalance(address _id,uint256 _bal)internal  {
+    function increaseBalance(address _id,uint256 _bal) internal   {
         accounts[_id].balance += _bal;
     }
     function decreaseBalance(address _id,uint256 _bal)internal  {
          require(accounts[_id].balance >= _bal, "Insufficient balance");
          accounts[_id].balance -= _bal;
     }
+
+    function transfer(address to,uint value)public onlyOwner{
+         require(value  > 0, "Amount must be positive");
+         require(accounts[msg.sender].balance >= value, "Insufficient balance");
+         require(to != address(0), "Invalid address");
+         require(to != msg.sender,"you cant send yourself");
+         accounts[msg.sender].balance -= value;
+         accounts[to].balance += value;
+         emit Transfer(isOwner,to, value, block.timestamp);
+    }
+
 
 }
